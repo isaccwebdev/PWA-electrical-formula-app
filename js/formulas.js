@@ -47,16 +47,16 @@ formulas['seccion_cable'] = {
     caida = parseFloat(caida);
     factor_de_potencia = parseFloat(factor_de_potencia);
 
+    // Resistividad en Ω·mm²/m
     const resistividad = material === "cobre" ? 0.0175 : 0.0282;
     const I = P / (V * factor_de_potencia);
-    const deltaV = ( V * caida ) / 100; // Caída de tensión en voltios
+    const deltaV = (V * caida) / 100; // Caída de tensión en voltios
 
     let S;
     if (fase === "monofasico") {
       S = (2 * L * I * resistividad) / deltaV;
     } else {
-      //S = (Math.sqrt(3) * L * I * resistividad) / deltaV * V;
-      S = (P * L) / (resistividad * deltaV * factor_de_potencia);
+      S = (Math.sqrt(3) * L * I * resistividad) / deltaV;
     }
 
     return S;
