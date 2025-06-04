@@ -1,4 +1,4 @@
-import { formulas } from './formulas.js';
+import { formulas, recomendarCable } from './formulas.js';
 
 const params = new URLSearchParams(window.location.search);
 const formulaId = params.get("formula");
@@ -40,13 +40,48 @@ if (!formulaId || !formulas[formulaId]) {
     campos.forEach(c => {
       const label = document.createElement("label");
       label.textContent = `${c}: `;
-      const input = document.createElement("input");
-      input.type = "number";
-      input.required = true;
-      input.name = c;
-      camposDiv.appendChild(label);
-      camposDiv.appendChild(input);
-      camposDiv.appendChild(document.createElement("br"));
+
+      // Selector para material
+      if (c === "material") {
+        const input = document.createElement("select");
+        input.name = c;
+        ["cobre", "aluminio"].forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt;
+          option.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+          input.appendChild(option);
+        });
+        camposDiv.appendChild(label);
+        camposDiv.appendChild(input);
+        camposDiv.appendChild(document.createElement("br"));
+      }
+      // Selector para fase
+      else if (c === "fase") {
+        const input = document.createElement("select");
+        input.name = c;
+        [
+          { value: "monofasico", label: "Monofásico" },
+          { value: "trifasico", label: "Trifásico" }
+        ].forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt.value;
+          option.textContent = opt.label;
+          input.appendChild(option);
+        });
+        camposDiv.appendChild(label);
+        camposDiv.appendChild(input);
+        camposDiv.appendChild(document.createElement("br"));
+      }
+      // Inputs normales
+      else {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.required = true;
+        input.name = c;
+        camposDiv.appendChild(label);
+        camposDiv.appendChild(input);
+        camposDiv.appendChild(document.createElement("br"));
+      }
     });
   };
 
@@ -62,6 +97,18 @@ if (!formulaId || !formulas[formulaId]) {
       valores[c] = parseFloat(container[c].value);
     });
     const resultadoValor = formula.calcular(objetivo, valores);
-    resultado.textContent = `${objetivo} = ${resultadoValor.toFixed(2)}`;
+    if (formulaId === "seccion_cable") {
+      const S = formula.calcular(objetivo, valores);
+      const cable = recomendarCable(S);
+      resultado.innerHTML = `
+        <div>
+          <strong>Sección calculada:</strong> ${S.toFixed(2)} mm²<br>
+          <strong>Sección comercial recomendada:</strong> ${cable.seccion} mm²<br>
+          <strong>Ampacidad:</strong> ${cable.ampacidad} A
+        </div>
+      `;
+    } else {
+      resultado.textContent = `${objetivo} = ${resultadoValor.toFixed(2)}`;
+    }
   });
 }
