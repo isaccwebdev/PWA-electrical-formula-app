@@ -76,6 +76,26 @@ a:hover, a:focus {
   background: #1565c0;
 }
 
+a[href*="index.html"] {
+  display: block;
+  margin: 32px auto 0 auto; /* margen superior y centrado horizontal */
+  padding: 6px 18px;
+  font-size: 0.95rem;
+  background: #e3eaf3;
+  color: #1976d2;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid #d1d9e6;
+  transition: background 0.2s, color 0.2s;
+  width: fit-content;
+  text-align: center;
+}
+
+a[href*="index.html"]:hover {
+  background: #d1d9e6;
+  color: #1565c0;
+}
+
 .container {
   max-width: 700px;
   margin: 3rem auto;
