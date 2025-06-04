@@ -55,7 +55,8 @@ formulas['seccion_cable'] = {
     if (fase === "monofasico") {
       S = (2 * L * I * resistividad) / deltaV;
     } else {
-      S = (Math.sqrt(3) * L * I * resistividad) / deltaV * V;
+      //S = (Math.sqrt(3) * L * I * resistividad) / deltaV * V;
+      S = (P * L) / (resistividad * deltaV * factor_de_potencia);
     }
 
     return S;
