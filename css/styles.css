@@ -1,0 +1,92 @@
+:root {
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #d1d9e6;
+  --color-text: #333;
+  --color-accent: #00bcd4; /* Cyan */
+  --color-accent-dark: #0097a7;
+  --radius: 12px;
+  --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--color-border);
+}
+
+h1, h2, h3 {
+  color: var(--color-accent-dark);
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background-color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--color-accent);
+}
+
+button {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-surface);
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+button:active {
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+
+.result-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  background-color: #ffffffdd;
+}
