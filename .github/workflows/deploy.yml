@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - master 
   workflow_dispatch:
 
 jobs:
@@ -13,28 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies (if any)
-        run: |
-          if [ -f package.json ]; then
-            npm install
-          fi
-
-      - name: Build project (if any build step)
-        run: |
-          if [ -f package.json ] && [ -f package-lock.json ]; then
-            npm run build || echo "No build script"
-          fi
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
-          force_orphan: true 
-          
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
