@@ -72,6 +72,25 @@ if (!formulaId || !formulas[formulaId]) {
         camposDiv.appendChild(input);
         camposDiv.appendChild(document.createElement("br"));
       }
+      // Selector para metodo
+      else if (c === "metodo") {
+        const label = document.createElement("label");
+        label.textContent = "Método de cálculo: ";
+        const select = document.createElement("select");
+        select.name = "metodo";
+        [
+          { value: "resistividad", label: "Resistividad (Ω·mm²/m)" },
+          { value: "conductividad", label: "Conductividad (m/(Ω·mm²))" }
+        ].forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt.value;
+          option.textContent = opt.label;
+          select.appendChild(option);
+        });
+        camposDiv.appendChild(label);
+        camposDiv.appendChild(select);
+        camposDiv.appendChild(document.createElement("br"));
+      }
       // Inputs normales
       else {
         const input = document.createElement("input");

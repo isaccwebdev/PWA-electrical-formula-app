@@ -32,31 +32,61 @@ export const formulas = {
     }
   }
 };
+formulas['ley_watt'] = {
+  nombre: "Ley de Watt",
+  variables: ["P", "V", "I"],
+  campos: {
+    P: ["V", "I"],
+    V: ["P", "I"],
+    I: ["P", "V"]
+  },   
+  calcular: function (objetivo, valores) {
+    const { P, V, I } = valores;
+    switch (objetivo) {
+      case "P": return V * I ;
+      case "V": return P / I ;
+      case "I": return P / V ;
+      default: return null;
+    }
+  }
+};
 
 formulas['seccion_cable'] = {
   nombre: "Cálculo sección de cable",
   variables: ["S"],
   campos: {
-    S: ["P", "V", "L", "material", "fase", "caida", "factor_de_potencia"]
+    S: ["P", "V", "L", "material", "fase", "caida", "factor_de_potencia", "metodo"] // Añade 'metodo'
   },
   calcular: function (objetivo, valores) {
-    let { P, V, L, material, fase, caida, factor_de_potencia } = valores;
+    let { P, V, L, material, fase, caida, factor_de_potencia, metodo } = valores;
     P = parseFloat(P);
     V = parseFloat(V);
     L = parseFloat(L);
     caida = parseFloat(caida);
     factor_de_potencia = parseFloat(factor_de_potencia);
 
-    // Resistividad en Ω·mm²/m
-    const resistividad = material === "cobre" ? 0.0175 : 0.0282;
+    // Valores para cobre y aluminio
+    const resistividad = material === "cobre" ? 0.0175 : 0.0282; // Ω·mm²/m
+    const conductividad = material === "cobre" ? 56 : 36; // m/(Ω·mm²)
+
     const I = P / (V * factor_de_potencia);
     const deltaV = (V * caida) / 100; // Caída de tensión en voltios
 
     let S;
-    if (fase === "monofasico") {
-      S = (2 * L * I * resistividad) / deltaV;
+    if (metodo === "conductividad") {
+      // Usando conductividad
+      if (fase === "monofasico") {
+        S = (2 * L * I) / (conductividad * deltaV);
+      } else {
+        S = (Math.sqrt(3) * L * I) / (conductividad * deltaV);
+      }
     } else {
-      S = (Math.sqrt(3) * L * I * resistividad) / deltaV;
+      // Por defecto, usando resistividad
+      if (fase === "monofasico") {
+        S = (2 * L * I * resistividad) / deltaV;
+      } else {
+        S = (Math.sqrt(3) * L * I * resistividad) / deltaV;
+      }
     }
 
     return S;
@@ -79,3 +109,4 @@ export const cablesComerciales = [
 export function recomendarCable(S) {
   return cablesComerciales.find(c => c.seccion >= S) || cablesComerciales[cablesComerciales.length - 1];
 }
+
