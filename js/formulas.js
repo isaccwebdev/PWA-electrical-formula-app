@@ -67,18 +67,22 @@ formulas['seccion_cable'] = {
 
     // Valores para cobre y aluminio
     const resistividad = material === "cobre" ? 0.0175 : 0.0282; // Ω·mm²/m
-    const conductividad = material === "cobre" ? 56 : 36; // m/(Ω·mm²)
-
+    const conductividad = material === "cobre" ? 56 : 36;
+   
     const I = P / (V * factor_de_potencia);
-    const deltaV = (V * caida) / 100; // Caída de tensión en voltios
-
+    const deltaV = V * (caida / 100 ); // caida en porcentaje
+    console.log(deltaV);
+    console.log(conductividad);
     let S;
+    
     if (metodo === "conductividad") {
       // Usando conductividad
       if (fase === "monofasico") {
         S = (2 * L * I) / (conductividad * deltaV);
       } else {
-        S = (Math.sqrt(3) * L * I) / (conductividad * deltaV);
+        //S = (Math.sqrt(3) * L * I) / (conductividad * deltaV);
+        S = ( P * L ) / ( conductividad * deltaV * V ) ;
+         
       }
     } else {
       // Por defecto, usando resistividad

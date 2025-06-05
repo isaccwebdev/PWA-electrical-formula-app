@@ -97,6 +97,7 @@ if (!formulaId || !formulas[formulaId]) {
         input.type = "number";
         input.required = true;
         input.name = c;
+        input.step ="0.01"
         camposDiv.appendChild(label);
         camposDiv.appendChild(input);
         camposDiv.appendChild(document.createElement("br"));
