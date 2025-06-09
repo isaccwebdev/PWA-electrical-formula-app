@@ -55,7 +55,7 @@ formulas['seccion_cable'] = {
   nombre: "Cálculo sección de cable",
   variables: ["S"],
   campos: {
-    S: ["P", "V", "L", "material", "fase", "caida", "factor_de_potencia", "metodo"] // Añade 'metodo'
+    S: ["P", "V", "L", "material", "fase", "caida", "factor_de_potencia", "metodo"]
   },
   calcular: function (objetivo, valores) {
     let { P, V, L, material, fase, caida, factor_de_potencia, metodo } = valores;
@@ -66,26 +66,24 @@ formulas['seccion_cable'] = {
     factor_de_potencia = parseFloat(factor_de_potencia);
 
     // Valores para cobre y aluminio
-    const resistividad = material === "cobre" ? 0.0175 : 0.0282; // Ω·mm²/m
-    const conductividad = material === "cobre" ? 56 : 36;
-   
-    const I = P / (V * factor_de_potencia);
-    const deltaV = V * (caida / 100 ); // caida en porcentaje
-    console.log(deltaV);
-    console.log(conductividad);
+    const conductividad = material === "cobre" ? 56 : 36; // m/(Ω·mm²)
+
+    const deltaV = V * (caida / 100); // caída en voltios
+
     let S;
-    
     if (metodo === "conductividad") {
-      // Usando conductividad
       if (fase === "monofasico") {
+        // Puedes dejar la fórmula estándar para monofásico
+        const I = P / (V * factor_de_potencia);
         S = (2 * L * I) / (conductividad * deltaV);
       } else {
-        //S = (Math.sqrt(3) * L * I) / (conductividad * deltaV);
-        S = ( P * L ) / ( conductividad * deltaV * V ) ;
-         
+        // Usa exactamente la fórmula que pides para trifásico
+        S = (P * L) / (conductividad * deltaV * V);
       }
     } else {
-      // Por defecto, usando resistividad
+      // Por defecto, usando resistividad (puedes dejarlo igual)
+      const resistividad = material === "cobre" ? 0.0175 : 0.0282; // Ω·mm²/m
+      const I = P / (V * factor_de_potencia);
       if (fase === "monofasico") {
         S = (2 * L * I * resistividad) / deltaV;
       } else {
